@@ -1,0 +1,92 @@
+p{% extends "base.html" %}
+
+{% block title %}Sign In — BusFlow{% endblock %}
+{% block page_title %}Account Access{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <div class="brand-logo-icon" style="margin: 0 auto 12px auto;">
+                <i class="bi bi-bus-front-fill"></i>
+            </div>
+            <h2 style="font-size: 22px; margin-bottom: 4px;">Welcome Back!</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">Sign in to your BusFlow control portal</p>
+        </div>
+
+        <!-- Role Switcher Pills -->
+        <div class="auth-role-tabs">
+            <button type="button" class="role-tab-btn active" onclick="setRole('passenger', this)">Passenger</button>
+            <button type="button" class="role-tab-btn" onclick="setRole('driver', this)">Driver</button>
+            <button type="button" class="role-tab-btn" onclick="setRole('admin', this)">Admin</button>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <input type="hidden" id="selected_role" name="role" value="passenger">
+            
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-envelope"></i> Email or Phone</label>
+                <input type="text" name="identifier" id="login_identifier" class="form-control" placeholder="Enter your email or phone" required value="passenger@busflow.com">
+            </div>
+
+            <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label class="form-label" style="margin-bottom: 0;"><i class="bi bi-lock"></i> Password</label>
+                    <a href="#" style="font-size: 12px; color: var(--accent-cyan);" onclick="alert('Demo Mode: Use predefined password listed below!')">Forgot password?</a>
+                </div>
+                <input type="password" name="password" id="login_password" class="form-control" placeholder="Enter password" required value="passenger123">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 13px; color: var(--text-muted);">
+                <input type="checkbox" id="remember_me" checked>
+                <label for="remember_me">Remember my credentials</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+                <i class="bi bi-box-arrow-in-right"></i> Sign In to Portal
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-muted);">
+            Don't have an account? <a href="{{ url_for('register') }}" style="color: #60A5FA; font-weight: 600;">Create Account</a>
+        </div>
+
+        <!-- 1-Click Quick Demo Box for BCA Viva -->
+        <div class="demo-credentials-box">
+            <div style="font-weight: 700; color: #93C5FD; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                <i class="bi bi-lightning-fill"></i> Instant Demo Logins (Viva Mode):
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <a href="{{ url_for('demo_login', role='passenger') }}" class="btn btn-secondary btn-sm" style="font-size: 11px; flex: 1;">
+                    <i class="bi bi-person"></i> Passenger
+                </a>
+                <a href="{{ url_for('demo_login', role='driver') }}" class="btn btn-secondary btn-sm" style="font-size: 11px; flex: 1;">
+                    <i class="bi bi-person-badge"></i> Driver
+                </a>
+                <a href="{{ url_for('demo_login', role='admin') }}" class="btn btn-secondary btn-sm" style="font-size: 11px; flex: 1;">
+                    <i class="bi bi-shield-check"></i> Admin
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function setRole(role, btn) {
+    document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('selected_role').value = role;
+
+    if (role === 'admin') {
+        document.getElementById('login_identifier').value = 'admin@busflow.com';
+        document.getElementById('login_password').value = 'admin123';
+    } else if (role === 'driver') {
+        document.getElementById('login_identifier').value = 'driver@busflow.com';
+        document.getElementById('login_password').value = 'driver123';
+    } else {
+        document.getElementById('login_identifier').value = 'passenger@busflow.com';
+        document.getElementById('login_password').value = 'passenger123';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — BusFlow{% endblock %}
+{% block page_title %}Registration{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <div class="brand-logo-icon" style="margin: 0 auto 12px auto;">
+                <i class="bi bi-bus-front-fill"></i>
+            </div>
+            <h2 style="font-size: 22px; margin-bottom: 4px;">Create Your Account</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">Join the BusFlow transit management network</p>
+        </div>
+
+        <!-- Role Switcher Pills matching mockup -->
+        <div class="auth-role-tabs">
+            <button type="button" class="role-tab-btn active" onclick="setRegRole('passenger', this)">Passenger</button>
+            <button type="button" class="role-tab-btn" onclick="setRegRole('driver', this)">Driver</button>
+            <button type="button" class="role-tab-btn" onclick="setRegRole('admin', this)">Admin</button>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <input type="hidden" id="reg_role" name="role" value="passenger">
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-person"></i> Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="e.g. Skanda Bharadwaj" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-envelope"></i> Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-telephone"></i> Phone Number</label>
+                <input type="tel" name="phone" class="form-control" placeholder="10-digit mobile number">
+            </div>
+
+            <div id="driver_license_group" class="form-group" style="display: none;">
+                <label class="form-label"><i class="bi bi-card-text"></i> Commercial Driving License No.</label>
+                <input type="text" name="license_number" class="form-control" placeholder="e.g. KA-0620240019283">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-lock"></i> Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Create strong password" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-shield-check"></i> Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control" placeholder="Re-enter password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px; margin-top: 8px;">
+                <i class="bi bi-person-plus-fill"></i> Register Account
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted);">
+            Already have an account? <a href="{{ url_for('login') }}" style="color: #60A5FA; font-weight: 600;">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function setRegRole(role, btn) {
+    document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('reg_role').value = role;
+
+    const licenseGroup = document.getElementById('driver_license_group');
+    if (role === 'driver') {
+        licenseGroup.style.display = 'block';
+    } else {
+        licenseGroup.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
